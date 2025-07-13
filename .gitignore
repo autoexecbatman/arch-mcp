@@ -1,19 +1,49 @@
-ÿþ/.vs
+# Visual Studio
+.vs/
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+[Bb]in
+[Dd]ebug*/
+*.lib
+*.sbr
+obj/
+[Rr]elease*/
+_ReSharper*/
+[Tt]est[Rr]esult*
 
-/.vs
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-/backup/server.js
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
 
-/backup/server_minimal.js
+# Runtime data
+data/
+*.log
+*.broken
 
-/data/context_tracking.json
-
-/data/cot_strands.json
-
-/data/metrics.json
-
-/data/patterns.json
-
-/data/preferences.json
-
-/data/violations.json
+# Temporary files
+*.tmp
+*.temp
+~*
