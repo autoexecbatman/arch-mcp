@@ -598,10 +598,41 @@ function addPattern(pattern_type, pattern_data) {
 }
 
 function getUserPreferences() {
+  const preferences = loadPreferences();
+  
+  // Dynamically build preference display from all stored preferences
+  const prefEntries = [];
+  
+  // Core preferences with readable names
+  const preferenceNames = {
+    communication_style: 'Communication',
+    aesthetic_approach: 'Aesthetic', 
+    development_location: 'Development',
+    command_preference: 'Commands',
+    accuracy_requirement: 'Accuracy',
+    accuracy_requirements: 'Accuracy',
+    monitoring: 'Monitoring',
+    unicode_usage: 'Unicode',
+    search_strategy: 'Search',
+    tool_safety: 'Tool Safety',
+    message_format: 'Message Format'
+  };
+  
+  // Add all preferences from file
+  for (const [key, value] of Object.entries(preferences)) {
+    if (key !== 'last_updated') {
+      const displayName = preferenceNames[key] || key.replace(/_/g, ' ');
+      const displayValue = typeof value === 'string' ? 
+        value.replace(/_/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2') : 
+        String(value);
+      prefEntries.push(`${displayName}: ${displayValue}`);
+    }
+  }
+  
   return {
     content: [{
       type: "text",
-      text: "User Preferences: Brief professional communication with mandatory message count display, Minimal aesthetic approach, D: drive development, && command chains, Maximum accuracy requirements, Context token tracking enabled"
+      text: `User Preferences: ${prefEntries.join(', ')}`
     }]
   };
 }
@@ -717,10 +748,28 @@ function updateUserPreferences(preference_type, preference_value, context) {
       preferences.command_preference = preference_value;
       break;
     case 'accuracy':
-      preferences.accuracy_requirement = preference_value;
+    case 'accuracy_requirements':
+      preferences.accuracy_requirements = preference_value;
+      preferences.accuracy_requirement = preference_value; // Keep both for compatibility
       break;
     case 'message_format':
       preferences.message_format = preference_value;
+      break;
+    case 'monitoring':
+      preferences.monitoring = preference_value;
+      break;
+    case 'unicode_usage':
+      preferences.unicode_usage = preference_value;
+      break;
+    case 'search_strategy':
+      preferences.search_strategy = preference_value;
+      break;
+    case 'tool_safety':
+      preferences.tool_safety = preference_value;
+      break;
+    default:
+      // Handle any other preference type dynamically
+      preferences[preference_type] = preference_value;
       break;
   }
   
