@@ -1,0 +1,10 @@
+[project]
+name = "architecture-server" 
+version = "0.1.0"
+description = "Architecture MCP server"
+dependencies = [
+    "mcp>=1.11.0"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]

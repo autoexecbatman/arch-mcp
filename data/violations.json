@@ -1,0 +1,163 @@
+{
+  "tool_safety_violations": [
+    {
+      "timestamp": "2025-07-11T23:19:45.740Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "read_multiple_files",
+        "action": "BLOCKED",
+        "reason": "Completely prohibited tool"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T05:30:15.755Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "read_multiple_files",
+        "action": "BLOCKED",
+        "reason": "Completely prohibited tool"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T06:00:02.117Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "read_multiple_files",
+        "action": "BLOCKED",
+        "reason": "Completely prohibited tool"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T07:10:34.574Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "read_multiple_files",
+        "action": "BLOCKED",
+        "reason": "Completely prohibited tool"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T07:25:00.713Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "read_multiple_files",
+        "action": "BLOCKED",
+        "reason": "Completely prohibited tool"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T15:23:14.646Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "read_multiple_files",
+        "action": "BLOCKED",
+        "reason": "Completely prohibited tool"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T16:07:59.601Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "read_multiple_files",
+        "action": "BLOCKED",
+        "reason": "Completely prohibited tool"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T16:08:02.947Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "read_file",
+        "action": "BLOCKED",
+        "reason": "Empty array parameter"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T16:51:29.887Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "read_multiple_files",
+        "action": "BLOCKED",
+        "reason": "Completely prohibited tool"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T18:18:52.780Z",
+      "type": "tool_safety",
+      "details": {
+        "tool": "filesystem:read_multiple_files",
+        "action": "BLOCKED",
+        "reason": "Empty array parameter"
+      }
+    }
+  ],
+  "professional_accuracy_violations": [
+    {
+      "timestamp": "2025-07-11T23:19:41.508Z",
+      "type": "professional_accuracy",
+      "details": {
+        "content_type": "technical_description",
+        "violations": [
+          "Marketing language detected: \"ultra-low\"",
+          "Marketing language detected: \"industry-leading\"",
+          "Competitor reference detected: \"similar to\""
+        ],
+        "content_sample": "Ultra-low CPU usage with industry-leading performance similar to SPAN"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T05:18:34.508Z",
+      "type": "professional_accuracy",
+      "details": {
+        "content_type": "technical_description",
+        "violations": [
+          "Marketing language detected: \"ultra-low\"",
+          "Marketing language detected: \"revolutionary\"",
+          "Marketing language detected: \"breakthrough\""
+        ],
+        "content_sample": "Revolutionary breakthrough with ultra-low CPU usage"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T16:07:46.909Z",
+      "type": "professional_accuracy",
+      "details": {
+        "content_type": "technical_description",
+        "violations": [
+          "Marketing language detected: \"ultra-low\"",
+          "Marketing language detected: \"industry-leading\"",
+          "Marketing language detected: \"revolutionary\"",
+          "Marketing language detected: \"best-in-class\"",
+          "Marketing language detected: \"breakthrough\"",
+          "Marketing language detected: \"amazing\""
+        ],
+        "content_sample": "This amazing revolutionary breakthrough technology offers industry-leading ultra-low latency that's "
+      }
+    },
+    {
+      "timestamp": "2025-07-12T16:07:51.654Z",
+      "type": "professional_accuracy",
+      "details": {
+        "content_type": "general",
+        "violations": [
+          "Competitor reference detected: \"like span\"",
+          "Competitor reference detected: \"similar to\"",
+          "Competitor reference detected: \"competes with\""
+        ],
+        "content_sample": "This solution is similar to CompetitorX and competes with Alternative Y, like span elements in HTML"
+      }
+    },
+    {
+      "timestamp": "2025-07-12T16:07:56.948Z",
+      "type": "professional_accuracy",
+      "details": {
+        "content_type": "specification",
+        "violations": [
+          "Specification enhancement detected (+ symbol)"
+        ],
+        "content_sample": "Frequency response: 20Hz-20kHz+ with enhanced bass boost"
+      }
+    }
+  ],
+  "preference_violations": []
+}
