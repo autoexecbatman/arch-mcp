@@ -42,8 +42,8 @@ class LocalAIServer {
                 },
                 model: {
                   type: 'string',
-                  description: 'Model name (default: deepseek-r1:32b)',
-                  default: 'deepseek-r1:32b'
+                  description: 'Model name (default: architecture-reasoning:latest)',
+                  default: 'architecture-reasoning:latest'
                 },
                 temperature: {
                   type: 'number',
@@ -72,7 +72,7 @@ class LocalAIServer {
                 model: {
                   type: 'string',
                   description: 'Model to use for reasoning',
-                  default: 'deepseek-r1:32b'
+                  default: 'architecture-reasoning:latest'
                 }
               },
               required: ['problem']
@@ -105,7 +105,7 @@ class LocalAIServer {
                 model: {
                   type: 'string',
                   description: 'Local model for analysis',
-                  default: 'deepseek-r1:32b'
+                  default: 'architecture-reasoning:latest'
                 }
               },
               required: ['data']
@@ -128,7 +128,7 @@ class LocalAIServer {
                 model: {
                   type: 'string',
                   description: 'Local model for reasoning',
-                  default: 'deepseek-r1:32b'
+                  default: 'architecture-reasoning:latest'
                 }
               },
               required: ['reasoning_task']
@@ -174,7 +174,7 @@ class LocalAIServer {
     });
   }
 
-  async queryLocalAI(prompt, model = 'deepseek-r1:32b', temperature = 0.6) {
+  async queryLocalAI(prompt, model = 'architecture-reasoning:latest', temperature = 0.6) {
     try {
       const response = await fetch(`${this.ollamaUrl}/api/generate`, {
         method: 'POST',
@@ -211,7 +211,7 @@ class LocalAIServer {
     }
   }
 
-  async reasoningAssist(problem, steps = 5, model = 'deepseek-r1:32b') {
+  async reasoningAssist(problem, steps = 5, model = 'architecture-reasoning:latest') {
     const structuredPrompt = `Problem: ${problem}
 
 Please provide a structured reasoning approach with exactly ${steps} steps:
@@ -258,7 +258,7 @@ Think step by step and show your reasoning process clearly.`;
     }
   }
 
-  async hybridAnalysis(data, approach = 'reasoning', model = 'deepseek-r1:32b') {
+  async hybridAnalysis(data, approach = 'reasoning', model = 'architecture-reasoning:latest') {
     const analysisPrompts = {
       reasoning: `Analyze this data using logical reasoning and chain of thought:
 
@@ -304,7 +304,7 @@ Focus on creativity and innovation.`
     return await this.queryLocalAI(prompt, model, 0.7);
   }
 
-  async tokenEfficientReasoning(reasoningTask, context = '', model = 'deepseek-r1:32b') {
+  async tokenEfficientReasoning(reasoningTask, context = '', model = 'architecture-reasoning:latest') {
     const efficientPrompt = `REASONING DELEGATION TASK:
 
 Task: ${reasoningTask}

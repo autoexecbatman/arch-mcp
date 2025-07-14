@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const { SmartMemoryGates, smartMemoryGates } = require('./smart_memory_gates.js');
 
 // Data storage
 const DATA_DIR = path.join(__dirname, 'data');
@@ -732,6 +733,21 @@ Convert to factual descriptions without marketing language or competitor referen
 }
 
 function updateUserPreferences(preference_type, preference_value, context) {
+  // GATE63: Smart filter existing preferences check
+  const memoryCheck = smartMemoryGates.smartFilterExistingPreferences(`${preference_type} ${preference_value}`);
+  
+  // GATE66: Targeted preference domain check
+  const domainCheck = smartMemoryGates.targetedPreferenceDomainCheck(preference_value, preference_type);
+  
+  if (domainCheck.exists && domainCheck.conflicts.length > 0) {
+    return {
+      content: [{
+        type: "text",
+        text: `⚠️ PREFERENCE CONFLICT DETECTED: ${preference_type} already exists with different value. Current: ${domainCheck.conflicts[0].existing}, Requested: ${preference_value}. Update anyway or resolve conflict?`
+      }]
+    };
+  }
+  
   const preferences = loadPreferences();
   
   switch (preference_type) {
@@ -788,3 +804,4 @@ function updateUserPreferences(preference_type, preference_value, context) {
 
 console.error('Enhanced Architecture MCP Server with Context Monitoring started');
 console.error('Professional Accuracy + Tool Safety + User Preferences + Context Tracking active');
+console.error('Smart Memory Gates 63-67 integrated with filtering protocols');

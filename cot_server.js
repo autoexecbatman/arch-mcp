@@ -156,15 +156,6 @@ function handleToolsList(request) {
       }
     },
     {
-      name: "list_strands",
-      description: "List all active and completed CoT strands",
-      inputSchema: {
-        type: "object",
-        properties: {},
-        required: []
-      }
-    },
-    {
       name: "complete_strand",
       description: "Mark CoT strand as completed with conclusion",
       inputSchema: {
@@ -180,6 +171,42 @@ function handleToolsList(request) {
           }
         },
         required: ["strand_id", "conclusion"]
+      }
+    },
+    {
+      name: "list_strands",
+      description: "List all CoT strands with optional filters",
+      inputSchema: {
+        type: "object",
+        properties: {
+          limit: {
+            type: "number",
+            description: "Maximum number of strands to return (default: 20)"
+          },
+          status: {
+            type: "string",
+            enum: ["active", "completed", "all"],
+            description: "Filter by strand status (default: all)"
+          }
+        }
+      }
+    },
+    {
+      name: "search_strands",
+      description: "Search CoT strands by topic or content keywords",
+      inputSchema: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "Search query for topics and content"
+          },
+          limit: {
+            type: "number",
+            description: "Maximum results to return (default: 10)"
+          }
+        },
+        required: ["query"]
       }
     },
     {
@@ -230,7 +257,10 @@ function handleToolCall(request) {
       handleGetStrand(request, args);
       break;
     case 'list_strands':
-      handleListStrands(request);
+      handleListStrands(request, args);
+      break;
+    case 'search_strands':
+      handleSearchStrands(request, args);
       break;
     case 'complete_strand':
       handleCompleteStrand(request, args);
@@ -437,6 +467,83 @@ function handleBranchStrand(request, args) {
         {
           type: "text",
           text: `Created branch '${branch_id}' from '${source_strand_id}' with topic: ${branch_topic}`
+        }
+      ]
+    }
+  };
+  console.log(JSON.stringify(response));
+}
+
+function handleSearchStrands(request, args) {
+  const { query, limit = 10 } = args;
+  const strands = loadCotStrands();
+  const searchTerm = query.toLowerCase();
+  
+  let results = [];
+  
+  // Search active strands
+  for (const [id, strand] of Object.entries(strands.active_strands)) {
+    const topicMatch = strand.topic.toLowerCase().includes(searchTerm);
+    const thoughtsMatch = strand.thoughts.some(thought => thought.toLowerCase().includes(searchTerm));
+    
+    if (topicMatch || thoughtsMatch) {
+      results.push({
+        id,
+        topic: strand.topic,
+        status: 'Active',
+        thoughts: strand.thoughts.length,
+        created: strand.created,
+        match_type: topicMatch ? 'topic' : 'content'
+      });
+    }
+  }
+  
+  // Search completed strands
+  for (const [id, strand] of Object.entries(strands.completed_strands)) {
+    const topicMatch = strand.topic.toLowerCase().includes(searchTerm);
+    const thoughtsMatch = strand.thoughts.some(thought => thought.toLowerCase().includes(searchTerm));
+    const conclusionMatch = strand.conclusion && strand.conclusion.toLowerCase().includes(searchTerm);
+    
+    if (topicMatch || thoughtsMatch || conclusionMatch) {
+      results.push({
+        id,
+        topic: strand.topic,
+        status: 'Completed',
+        thoughts: strand.thoughts.length,
+        created: strand.created,
+        match_type: topicMatch ? 'topic' : (conclusionMatch ? 'conclusion' : 'content')
+      });
+    }
+  }
+  
+  // Sort by relevance (topic matches first, then by date)
+  results.sort((a, b) => {
+    if (a.match_type === 'topic' && b.match_type !== 'topic') return -1;
+    if (b.match_type === 'topic' && a.match_type !== 'topic') return 1;
+    return new Date(b.created) - new Date(a.created);
+  });
+  
+  // Limit results
+  results = results.slice(0, limit);
+  
+  let output = `Search results for "${query}" (${results.length} found):\n\n`;
+  
+  if (results.length === 0) {
+    output = `No strands found matching "${query}".`;
+  } else {
+    results.forEach(result => {
+      output += `${result.id}: ${result.topic} (${result.status}, ${result.thoughts} thoughts, ${result.match_type} match)\n`;
+    });
+  }
+
+  const response = {
+    jsonrpc: "2.0",
+    id: request.id,
+    result: {
+      content: [
+        {
+          type: "text",
+          text: output.trim()
         }
       ]
     }
